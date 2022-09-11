@@ -1436,6 +1436,7 @@
 <span id="1430">1430</span>
 <span id="1431">1431</span>
 <span id="1432">1432</span>
+<span id="1433">1433</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) The nextest Contributors</span>
 <span class="comment">// SPDX-License-Identifier: MIT OR Apache-2.0</span>
 
@@ -2280,16 +2281,17 @@
                                     <span class="bool-val">false</span> =&gt; <span class="self">self</span>.<span class="ident">failure_output</span>,
                                 };
 
-                                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">final_status_level</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">final_status_level</span> {
+                                <span class="comment">// Print out the final status line so that status lines are shown</span>
+                                <span class="comment">// for tests that e.g. failed due to signals.</span>
+                                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">final_status_level</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">final_status_level</span>
+                                    <span class="op">|</span><span class="op">|</span> <span class="ident">test_output_display</span>.<span class="ident">is_final</span>()
+                                {
                                     <span class="self">self</span>.<span class="ident">write_final_status_line</span>(
                                         <span class="kw-2">*</span><span class="ident">test_instance</span>,
                                         <span class="ident">run_statuses</span>.<span class="ident">describe</span>(),
                                         <span class="ident">writer</span>,
                                     )<span class="question-mark">?</span>;
                                 }
-                                <span class="comment">// This was previously gated on &quot;if self.status_level &gt;= StatusLevel::Fail&quot;</span>
-                                <span class="comment">// but that seems incorrect -- the test output display and status level</span>
-                                <span class="comment">// controls are independent of each other.</span>
                                 <span class="kw">if</span> <span class="ident">test_output_display</span>.<span class="ident">is_final</span>() {
                                     <span class="self">self</span>.<span class="ident">write_stdout_stderr</span>(
                                         <span class="ident">test_instance</span>,
