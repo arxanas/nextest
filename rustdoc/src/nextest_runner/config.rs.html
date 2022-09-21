@@ -1287,6 +1287,87 @@
 <span id="1281">1281</span>
 <span id="1282">1282</span>
 <span id="1283">1283</span>
+<span id="1284">1284</span>
+<span id="1285">1285</span>
+<span id="1286">1286</span>
+<span id="1287">1287</span>
+<span id="1288">1288</span>
+<span id="1289">1289</span>
+<span id="1290">1290</span>
+<span id="1291">1291</span>
+<span id="1292">1292</span>
+<span id="1293">1293</span>
+<span id="1294">1294</span>
+<span id="1295">1295</span>
+<span id="1296">1296</span>
+<span id="1297">1297</span>
+<span id="1298">1298</span>
+<span id="1299">1299</span>
+<span id="1300">1300</span>
+<span id="1301">1301</span>
+<span id="1302">1302</span>
+<span id="1303">1303</span>
+<span id="1304">1304</span>
+<span id="1305">1305</span>
+<span id="1306">1306</span>
+<span id="1307">1307</span>
+<span id="1308">1308</span>
+<span id="1309">1309</span>
+<span id="1310">1310</span>
+<span id="1311">1311</span>
+<span id="1312">1312</span>
+<span id="1313">1313</span>
+<span id="1314">1314</span>
+<span id="1315">1315</span>
+<span id="1316">1316</span>
+<span id="1317">1317</span>
+<span id="1318">1318</span>
+<span id="1319">1319</span>
+<span id="1320">1320</span>
+<span id="1321">1321</span>
+<span id="1322">1322</span>
+<span id="1323">1323</span>
+<span id="1324">1324</span>
+<span id="1325">1325</span>
+<span id="1326">1326</span>
+<span id="1327">1327</span>
+<span id="1328">1328</span>
+<span id="1329">1329</span>
+<span id="1330">1330</span>
+<span id="1331">1331</span>
+<span id="1332">1332</span>
+<span id="1333">1333</span>
+<span id="1334">1334</span>
+<span id="1335">1335</span>
+<span id="1336">1336</span>
+<span id="1337">1337</span>
+<span id="1338">1338</span>
+<span id="1339">1339</span>
+<span id="1340">1340</span>
+<span id="1341">1341</span>
+<span id="1342">1342</span>
+<span id="1343">1343</span>
+<span id="1344">1344</span>
+<span id="1345">1345</span>
+<span id="1346">1346</span>
+<span id="1347">1347</span>
+<span id="1348">1348</span>
+<span id="1349">1349</span>
+<span id="1350">1350</span>
+<span id="1351">1351</span>
+<span id="1352">1352</span>
+<span id="1353">1353</span>
+<span id="1354">1354</span>
+<span id="1355">1355</span>
+<span id="1356">1356</span>
+<span id="1357">1357</span>
+<span id="1358">1358</span>
+<span id="1359">1359</span>
+<span id="1360">1360</span>
+<span id="1361">1361</span>
+<span id="1362">1362</span>
+<span id="1363">1363</span>
+<span id="1364">1364</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) The nextest Contributors</span>
 <span class="comment">// SPDX-License-Identifier: MIT OR Apache-2.0</span>
 
@@ -1304,7 +1385,9 @@
 <span class="kw">use</span> <span class="ident">guppy::graph::PackageGraph</span>;
 <span class="kw">use</span> <span class="ident">nextest_filtering</span>::{<span class="ident">FilteringExpr</span>, <span class="ident">TestQuery</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de::IntoDeserializer</span>, <span class="ident">Deserialize</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">fmt</span>, <span class="ident">num::NonZeroUsize</span>, <span class="ident">str::FromStr</span>, <span class="ident">time::Duration</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">cmp::Ordering</span>, <span class="ident">collections::HashMap</span>, <span class="ident">fmt</span>, <span class="ident">num::NonZeroUsize</span>, <span class="ident">str::FromStr</span>, <span class="ident">time::Duration</span>,
+};
 
 <span class="doccomment">/// Overall configuration for nextest.</span>
 <span class="doccomment">///</span>
@@ -1837,11 +1920,18 @@
 
     <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Err</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">s</span> <span class="op">==</span> <span class="string">&quot;num-cpus&quot;</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::NumCpus</span>)
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">threads</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Count</span>(<span class="ident">threads</span>))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">TestThreadsParseError::new</span>(<span class="ident">s</span>))
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::NumCpus</span>);
+        }
+
+        <span class="kw">match</span> <span class="ident">s</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">isize</span><span class="op">&gt;</span>() {
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">TestThreadsParseError::new</span>(<span class="macro">format!</span>(
+                <span class="string">&quot;Error: {e} parsing {s}&quot;</span>
+            ))),
+            <span class="prelude-val">Ok</span>(<span class="number">0</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">TestThreadsParseError::new</span>(<span class="string">&quot;jobs may not be 0&quot;</span>)),
+            <span class="prelude-val">Ok</span>(<span class="ident">j</span>) <span class="kw">if</span> <span class="ident">j</span> <span class="op">&lt;</span> <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">TestThreads::Count</span>(
+                (<span class="ident">num_cpus::get</span>() <span class="kw">as</span> <span class="ident">isize</span> <span class="op">+</span> <span class="ident">j</span>).<span class="ident">max</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="ident">usize</span>
+            )),
+            <span class="prelude-val">Ok</span>(<span class="ident">j</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">TestThreads::Count</span>(<span class="ident">j</span> <span class="kw">as</span> <span class="ident">usize</span>)),
         }
     }
 }
@@ -1879,7 +1969,16 @@
             <span class="kw">where</span>
                 <span class="ident">E</span>: <span class="ident">serde::de::Error</span>,
             {
-                <span class="prelude-val">Ok</span>(<span class="ident">TestThreads::Count</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">usize</span>))
+                <span class="kw">match</span> <span class="ident">v</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="number">0</span>) {
+                    <span class="ident">Ordering::Greater</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">TestThreads::Count</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">usize</span>)),
+                    <span class="ident">Ordering::Less</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">TestThreads::Count</span>(
+                        (<span class="ident">num_cpus::get</span>() <span class="kw">as</span> <span class="ident">i64</span> <span class="op">+</span> <span class="ident">v</span>).<span class="ident">max</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="ident">usize</span>
+                    )),
+                    <span class="ident">Ordering::Equal</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">serde::de::Error::invalid_value</span>(
+                        <span class="ident">serde::de::Unexpected::Signed</span>(<span class="ident">v</span>),
+                        <span class="kw-2">&amp;</span><span class="self">self</span>,
+                    )),
+                }
             }
         }
 
@@ -2541,6 +2640,69 @@
             <span class="prelude-val">Some</span>(<span class="number">26</span>),
             <span class="string">&quot;retries for test_baz/default profile&quot;</span>
         );
+    }
+
+    <span class="attribute">#[<span class="ident">test_case</span>(
+        <span class="macro">indoc!</span> {<span class="string">r#&quot;
+            [profile.custom]
+            test-threads = -1
+        &quot;#</span>},
+        <span class="prelude-val">None</span>
+
+        ; <span class="string">&quot;negative_j&quot;</span>
+    )]</span>
+    <span class="attribute">#[<span class="ident">test_case</span>(
+        <span class="macro">indoc!</span> {<span class="string">r#&quot;
+            [profile.custom]
+            test-threads = 2
+        &quot;#</span>},
+        <span class="prelude-val">Some</span>(<span class="number">2</span>)
+
+        ; <span class="string">&quot;positive_j&quot;</span>
+    )]</span>
+    <span class="attribute">#[<span class="ident">test_case</span>(
+        <span class="macro">indoc!</span> {<span class="string">r#&quot;
+            [profile.custom]
+            test-threads = 0
+        &quot;#</span>},
+        <span class="prelude-val">Some</span>(<span class="number">0</span>)
+
+        ; <span class="string">&quot;zero_j&quot;</span>
+    )]</span>
+    <span class="kw">fn</span> <span class="ident">parse_test_threads_negative_jobs</span>(<span class="ident">config_contents</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">n_threads</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+        <span class="kw">let</span> <span class="ident">workspace_dir</span> <span class="op">=</span> <span class="ident">tempdir</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">workspace_path</span>: <span class="kw-2">&amp;</span><span class="ident">Utf8Path</span> <span class="op">=</span> <span class="ident">workspace_dir</span>.<span class="ident">path</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="ident">graph</span> <span class="op">=</span> <span class="ident">temp_workspace</span>(<span class="ident">workspace_path</span>, <span class="ident">config_contents</span>);
+
+        <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">NextestConfig::from_sources</span>(<span class="ident">graph</span>.<span class="ident">workspace</span>().<span class="ident">root</span>(), <span class="kw-2">&amp;</span><span class="ident">graph</span>, <span class="prelude-val">None</span>, []);
+        <span class="kw">match</span> <span class="ident">n_threads</span> {
+            <span class="prelude-val">Some</span>(<span class="number">0</span>) =&gt; <span class="macro">assert!</span>(<span class="ident">config</span>.<span class="ident">is_err</span>()),
+            <span class="prelude-val">Some</span>(<span class="ident">j</span>) =&gt; <span class="macro">assert_eq!</span>(
+                <span class="ident">config</span>
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">profile</span>(<span class="string">&quot;custom&quot;</span>)
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">custom_profile</span>
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">test_threads</span>
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">compute</span>(),
+                <span class="ident">j</span>
+            ),
+            <span class="prelude-val">None</span> =&gt; <span class="macro">assert_eq!</span>(
+                <span class="ident">config</span>
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">profile</span>(<span class="string">&quot;custom&quot;</span>)
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">custom_profile</span>
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">test_threads</span>
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">compute</span>(),
+                <span class="ident">num_cpus::get</span>() <span class="op">-</span> <span class="number">1</span>
+            ),
+        }
     }
 
     <span class="kw">fn</span> <span class="ident">temp_workspace</span>(<span class="ident">temp_dir</span>: <span class="kw-2">&amp;</span><span class="ident">Utf8Path</span>, <span class="ident">config_contents</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">PackageGraph</span> {

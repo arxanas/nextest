@@ -1586,6 +1586,12 @@
 <span id="1580">1580</span>
 <span id="1581">1581</span>
 <span id="1582">1582</span>
+<span id="1583">1583</span>
+<span id="1584">1584</span>
+<span id="1585">1585</span>
+<span id="1586">1586</span>
+<span id="1587">1587</span>
+<span id="1588">1588</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) The nextest Contributors</span>
 <span class="comment">// SPDX-License-Identifier: MIT OR Apache-2.0</span>
 
@@ -2194,7 +2200,8 @@
         <span class="ident">visible_alias</span> <span class="op">=</span> <span class="string">&quot;jobs&quot;</span>,
         <span class="ident">value_name</span> <span class="op">=</span> <span class="string">&quot;THREADS&quot;</span>,
         <span class="ident">conflicts_with_all</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;no-capture&quot;</span>, <span class="string">&quot;no-run&quot;</span>]</span>,
-        <span class="ident">env</span> <span class="op">=</span> <span class="string">&quot;NEXTEST_TEST_THREADS&quot;</span>
+        <span class="ident">env</span> <span class="op">=</span> <span class="string">&quot;NEXTEST_TEST_THREADS&quot;</span>,
+	<span class="ident">allow_hyphen_values</span> <span class="op">=</span> <span class="bool-val">true</span>
     )]
     <span class="ident">test_threads</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TestThreads</span><span class="op">&gt;</span>,
 
@@ -2941,6 +2948,9 @@
             <span class="comment">// Test binary arguments</span>
             <span class="comment">// ---</span>
             <span class="string">&quot;cargo nextest run -- --a an arbitary arg&quot;</span>,
+		<span class="comment">// Test negative test threads</span>
+		<span class="string">&quot;cargo nextest run --jobs -3&quot;</span>,
+		<span class="string">&quot;cargo nextest run --jobs 3&quot;</span>,
         ];
 
         <span class="kw">let</span> <span class="ident">invalid</span>: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">ErrorKind</span>)] <span class="op">=</span> <span class="kw-2">&amp;</span>[
@@ -3055,6 +3065,8 @@
                 <span class="string">&quot;cargo nextest run --archive-file foo --target-dir-remap bar&quot;</span>,
                 <span class="ident">ArgumentConflict</span>,
             ),
+            <span class="comment">// Invalid test threads: 0</span>
+            (<span class="string">&quot;cargo nextest run --jobs 0&quot;</span>, <span class="ident">ValueValidation</span>),
         ];
 
         <span class="kw">for</span> <span class="ident">valid_args</span> <span class="kw">in</span> <span class="ident">valid</span> {
